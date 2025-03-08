@@ -1,5 +1,5 @@
 # .gitignore
-cd 
+
 node_modules
 .env
 .DS_Store
