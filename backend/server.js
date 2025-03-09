@@ -35,8 +35,49 @@ app.get('/api/movies/popular', async (request, response) => {
         response.status(500).json({error: 'Failed to fetch'});
 
     }
-    
-    
+})
+
+// Get movie details by ID
+app.get('/api/movies/:id' , async (request, response) => {
+    try{
+        const movieID = request.params.id;
+
+        const response = await axios.get(`${TMDB_BASE_URL}/movie/${movieID}`, {
+            params: {
+                api_key: TMDB_API_KEY,
+                language: 'en-us', 
+                append_to_response: 'videos, credits'
+            }
+        })
+        response.json(response.data)
+    }
+    catch(error){
+        console.log(`Error fetching movie ${request.params.id}:`, error);
+        response.status(500).json({error: `Failed to fetch movie ${req.params.id}`});
+    }
+
+})
+
+
+//Get movie Recommendations
+app.get('/api/movies/:id/recommendations', async (request, response) => {
+    try{
+        const movieID = request.params.id;
+
+        const response = await axios.get(`${TMDB_BASE_URL}/movie/${movieID}/recommendations`, {
+            params:{
+                api_key : TMDB_API_KEY, 
+                language : 'en-us', 
+                page : request.query.page || 1
+            }
+        })
+        response.json(response.data)
+    }
+    catch(error){
+        console.error(`Error fetching recommendations for movie ${req.params.id}:`, error);
+        res.status(500).json({ error: `Failed to fetch recommendations for movie ${req.params.id}` });
+
+    }   
 })
 
 
