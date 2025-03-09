@@ -80,6 +80,32 @@ app.get('/api/movies/:id/recommendations', async (request, response) => {
     }   
 })
 
+//Search for movies
+
+app.get('/api/search/movies', async (request, response) => {
+    try{
+        const query = request.query.query;
+
+        if(!query){
+            return response.status(400).json({ error: 'Search query is required' }); //client failed to provide a required search query parameter
+        }
+        const response = await axios.get(`${TMDB_BASE_URL}/search/movie`, {
+            params: {
+                api_key : TMDB_API_KEY, 
+                language : 'en-us', 
+                query: query,
+                page: req.query.page || 1 
+            }
+        })
+        response.json(response.data)
+    }
+    catch(error){
+        console.error('Error searching movies:', error);
+        response.status(500).json({ error: 'Failed to search movies' });
+    }
+    
+})
+
 
 
 
