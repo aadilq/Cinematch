@@ -103,7 +103,10 @@ app.get('/api/search/movies', async (request, response) => {
         console.error('Error searching movies:', error);
         response.status(500).json({ error: 'Failed to search movies' });
     }
-    
+})
+
+app.listen(PORT, ()=>{
+    console.log(`port is listening on PORT${PORT}`); //We want to console.log that the server has started
 })
 
 
