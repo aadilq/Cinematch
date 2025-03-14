@@ -1,4 +1,4 @@
-import React, { useState }from 'react';
+import React, { useState, useEffect }from 'react';
 import SearchBar from '../components/layout/Searchbar';
 import MovieGrid from '../components/movies/MovieGrid';
 import LoadingSpinner from '../components/layout/LoadingSpinner';
@@ -42,14 +42,30 @@ const Home = () => {
         <section className='bg-gradient-to-r from-secondary to-primary-dark py-20 px-4'>
             <div className='container mx-auto text-center'>
                 <div className='flex justify-center mb-4'>
-                    <FaFilm className ='text-accent text-5xl' />
+                    <FaFilm className ='text-accent text-5xl'/>
                 </div>
+                <h1 className='text-4xl md:text-5xl font-bold mb-4'>
+                        Find Your Perfect Movie Match
+                    </h1>
+                    <p className='text-xl text-gray-300 mb-8 max-w-2xl mx-auto'>
+                        Search for any movies and discover similar titles that match your taste
+                    </p>
+                    <SearchBar />
             </div>
+        </section>
+        <section className='py-10'>
+            {loading ? (
+                <LoadingSpinner />
+                 // We want to Show loading spinner when data is being fetched
+            ): error ? (
+                <div className='text-center text-red-500 py-10'>{error}</div>
+            ) : (
+                <MovieGrid movies={popularMovies} title="Popular Movies" />
+            )};
         </section>
     </div>
   )
 }
-
 export default Home
 
 
