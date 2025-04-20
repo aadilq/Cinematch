@@ -1,7 +1,7 @@
-// Load environment variables from .env file
-require('dotenv').configure(); //Loads .env file contents into process.env by default
 
-const express = require('express'); //Express is the web server framework that we will be using
+require('dotenv').configure(); 
+
+const express = require('express'); 
 const cors = require('cors'); //cors will allow us to make requests from our frontend to backend
 const axios = require('axios'); //axios will be used to make https request to the TMDB API
 
@@ -87,7 +87,7 @@ app.get('/api/search/movies', async (request, response) => {
         const query = request.query.query;
 
         if(!query){
-            return response.status(400).json({ error: 'Search query is required' }); //client failed to provide a required search query parameter
+            return response.status(400).json({ error: 'Search query is required' }); 
         }
         const response = await axios.get(`${TMDB_BASE_URL}/search/movie`, {
             params: {
@@ -106,7 +106,7 @@ app.get('/api/search/movies', async (request, response) => {
 })
 
 app.listen(PORT, ()=>{
-    console.log(`port is listening on PORT${PORT}`); //We want to console.log that the server has started
+    console.log(`port is listening on PORT${PORT}`); 
 })
 
 

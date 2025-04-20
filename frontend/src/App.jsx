@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Navbar from './components/layout/Navbar';
+import Home from './pages/Home';
+import SearchResults from './pages/SearchResults';
+import MovieDetails from './pages/MovieDetails';
+import { FaHeart } from 'react-icons/fa';
 
-function App() {
-  const [count, setCount] = useState(0)
 
+
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element = {<Home />}/> //Route for the home page
+            <Route path="/search" element = {<SearchResults />} /> //Route for the Search Results pages
+            <Route path="/movie/:id" element = {<MovieDetails />} /> //Route for the movie details
+          </Routes>
+        </main>
+        <footer className="bg-secondary py-6">
+          <div className="container mx-auto px-4 text-center text-gray-400">
+            <p className="flex items-center justify-center gap-2">
+              Made <FaHeart className="text-accent"/> For movie lovers
+            </p>
+            <p className="mt-2 text-sm">
+              Powered by TMDB API 
+            </p>
+          </div>
+        </footer>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </Router>
   )
 }
 
 export default App
+
