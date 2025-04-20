@@ -1,5 +1,5 @@
 
-require('dotenv').configure(); 
+require('dotenv').config(); 
 
 const express = require('express'); 
 const cors = require('cors'); //cors will allow us to make requests from our frontend to backend
@@ -19,28 +19,28 @@ app.use(express.json());
 
 //API routes
 //Get Popular Movies
-app.get('/api/movies/popular', async (request, response) => {
+app.get('/api/movies/popular', async (req, res) => {
     try{
         const response = await axios.get(`${TMDB_BASE_URL}/movie/popular`, {
             params: {
                 api_key: TMDB_API_KEY, // Pass our API key
                 language: 'en-us', //Set the language to English
-                page: request.query.page || 1 //Get the page number from the query or just default it to one
+                page: req.query.page || 1 //Get the page number from the query or just default it to one
             }
         })
-        response.json(response.data) // Send the data from TMDB back to the client
+        res.json(res.data) // Send the data from TMDB back to the client
     } catch(error){
         // If an error occurs, log it and send an error response
         console.log('Error fetching popular movies: ', error);
-        response.status(500).json({error: 'Failed to fetch'});
+        res.status(500).json({error: 'Failed to fetch'});
 
     }
 })
 
 // Get movie details by ID
-app.get('/api/movies/:id' , async (request, response) => {
+app.get('/api/movies/:id' , async (req, res) => {
     try{
-        const movieID = request.params.id;
+        const movieID = req.params.id;
 
         const response = await axios.get(`${TMDB_BASE_URL}/movie/${movieID}`, {
             params: {
@@ -49,20 +49,20 @@ app.get('/api/movies/:id' , async (request, response) => {
                 append_to_response: 'videos, credits'
             }
         })
-        response.json(response.data)
+        res.json(res.data)
     }
     catch(error){
-        console.log(`Error fetching movie ${request.params.id}:`, error);
-        response.status(500).json({error: `Failed to fetch movie ${req.params.id}`});
+        console.log(`Error fetching movie ${req.params.id}:`, error);
+        res.status(500).json({error: `Failed to fetch movie ${req.params.id}`});
     }
 
 })
 
 
 //Get movie Recommendations
-app.get('/api/movies/:id/recommendations', async (request, response) => {
+app.get('/api/movies/:id/recommendations', async (req, res) => {
     try{
-        const movieID = request.params.id;
+        const movieID = req.params.id;
 
         const response = await axios.get(`${TMDB_BASE_URL}/movie/${movieID}/recommendations`, {
             params:{
@@ -71,7 +71,7 @@ app.get('/api/movies/:id/recommendations', async (request, response) => {
                 page : request.query.page || 1
             }
         })
-        response.json(response.data)
+        res.json(res.data)
     }
     catch(error){
         console.error(`Error fetching recommendations for movie ${req.params.id}:`, error);
@@ -82,12 +82,12 @@ app.get('/api/movies/:id/recommendations', async (request, response) => {
 
 //Search for movies
 
-app.get('/api/search/movies', async (request, response) => {
+app.get('/api/search/movies', async (req, res) => {
     try{
-        const query = request.query.query;
+        const query = req.query.query;
 
         if(!query){
-            return response.status(400).json({ error: 'Search query is required' }); 
+            return res.status(400).json({ error: 'Search query is required' }); 
         }
         const response = await axios.get(`${TMDB_BASE_URL}/search/movie`, {
             params: {
@@ -97,11 +97,11 @@ app.get('/api/search/movies', async (request, response) => {
                 page: req.query.page || 1 
             }
         })
-        response.json(response.data)
+        res.json(res.data)
     }
     catch(error){
         console.error('Error searching movies:', error);
-        response.status(500).json({ error: 'Failed to search movies' });
+        res.status(500).json({ error: 'Failed to search movies' });
     }
 })
 
